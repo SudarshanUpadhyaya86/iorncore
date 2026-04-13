@@ -277,7 +277,6 @@
       const user = JSON.parse(localStorage.getItem('icUser') || '{}');
       user.plan = planName;
       localStorage.setItem('icUser', JSON.stringify(user));
-
       // Visual feedback on all cards
       document.querySelectorAll('.plan-card').forEach(c => {
         c.classList.remove('selected');
