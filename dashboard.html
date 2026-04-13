@@ -1,6 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
+<head><!DOCTYPE html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — IronCore Fitness</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body id="dashPage">
+
+  <!-- ===== NAV ===== -->
+  <nav class="nav">
+    <a href="index.html" class="logo">IRONCORE</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="plans.html">Plans</a></li>
+      <li><a href="#" id="logoutLink">Logout</a></li>
+    </ul>
+  </nav>
+
+  <!-- ===== DASHBOARD ===== -->
+  <div class="dashboard">
+
+    <div class="dash-header">
+      <h1 class="dash-greeting">
+        Welcome back, 
+        <span id="dashFirst">Athlete</span> 💪
+      </h1>
+      <p class="dash-sub">Let’s crush today’s goals.</p>
+    </div>
+
+    <!-- USER PROFILE -->
+    <div class="dash-card" style="margin-bottom:20px;">
+      <h3 style="margin-bottom:10px;">Profile</h3>
+      <h2 id="dashName">Name</h2>
+      <p id="dashEmail">email@example.com</p>
+      <div id="dashAvatar" style="
+        width:50px;height:50px;border-radius:50%;
+        background:orange;color:#000;
+        display:flex;align-items:center;justify-content:center;
+        font-weight:bold;margin-top:10px;">
+        U
+      </div>
+    </div>
+
+    <!-- PLAN INFO -->
+    <div class="dash-card">
+      <h3>Your Plan</h3>
+      <p id="dashPlan">Basic Plan</p>
+      <p>Status: <span id="dashStatus">Active</span></p>
+      <p>Member Since: <span id="dashSince">April 2026</span></p>
+
+      <button id="upgradeBtn" style="margin-top:10px;">
+        Upgrade Plan 🚀
+      </button>
+    </div>
+
+    <!-- LOGOUT -->
+    <div style="margin-top:30px;">
+      <button id="logoutBtn">Logout</button>
+    </div>
+
+  </div>
+
+  <!-- ===== MAIN SCRIPT ONLY ===== -->
+  <script src="script.js"></script>
+
+</body>
+</html>
+
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard — IronCore Fitness</title>
