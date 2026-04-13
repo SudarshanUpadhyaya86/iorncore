@@ -5,435 +5,66 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard — IronCore Fitness</title>
   <link rel="stylesheet" href="style.css" />
-  <style>
-    /* Quick-access action cards */
-    .quick-actions{
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:1.2rem;margin-bottom:2rem;
-    }
-    .qa-card{
-      background:var(--card-bg);
-      border:1px solid var(--border);
-      border-radius:var(--r2);
-      padding:1.4rem;
-      text-align:center;
-      cursor:pointer;
-      transition:all .3s ease;
-    }
-    .qa-card:hover{
-      border-color:rgba(255,107,0,.4);
-      transform:translateY(-5px);
-      box-shadow:var(--glow-sm);
-    }
-    .qa-icon{font-size:1.8rem;margin-bottom:.6rem}
-    .qa-label{font-size:.78rem;font-weight:600;letter-spacing:.5px;color:var(--muted)}
-
-    /* Calendar strip */
-    .cal-strip{
-      display:flex;gap:.7rem;margin-bottom:2rem;overflow-x:auto;
-      padding-bottom:.5rem;
-    }
-    .cal-day{
-      flex-shrink:0;
-      width:52px;text-align:center;
-      background:var(--card-bg);
-      border:1px solid var(--border);
-      border-radius:var(--r);padding:.7rem .3rem;
-      cursor:pointer;transition:all .3s;
-    }
-    .cal-day .dow{font-size:.65rem;color:var(--muted);font-weight:600;letter-spacing:1px;margin-bottom:.4rem}
-    .cal-day .dom{font-family:var(--font-d);font-size:1.4rem;line-height:1}
-    .cal-day.today{border-color:var(--orange);background:rgba(255,107,0,.08)}
-    .cal-day.today .dom,.cal-day.today .dow{color:var(--orange)}
-    .cal-day.has-workout .dom::after{
-      content:'';display:block;
-      width:5px;height:5px;border-radius:50%;
-      background:var(--orange);margin:.3rem auto 0;
-    }
-    .cal-day:hover:not(.today){border-color:var(--border2);transform:translateY(-2px)}
-
-    /* Workout card */
-    .workout-card{
-      background:var(--card-bg);
-      border:1px solid var(--border);
-      border-radius:var(--r2);
-      padding:1.8rem;
-      margin-bottom:1.5rem;
-    }
-    .workout-header{
-      display:flex;justify-content:space-between;align-items:center;
-      margin-bottom:1.3rem;
-    }
-    .workout-header h4{font-family:var(--font-d);font-size:1.5rem;letter-spacing:1px}
-    .workout-tag{
-      display:inline-block;padding:.3rem .85rem;
-      border-radius:var(--r3);font-size:.72rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;
-    }
-    .tag-strength{background:rgba(255,107,0,.15);color:var(--orange);border:1px solid rgba(255,107,0,.3)}
-    .tag-cardio{background:rgba(34,221,136,.1);color:#22dd88;border:1px solid rgba(34,221,136,.25)}
-    .tag-rest{background:rgba(100,100,100,.1);color:var(--muted);border:1px solid var(--border2)}
-
-    .exercise-list{display:flex;flex-direction:column;gap:.8rem}
-    .ex-item{
-      display:flex;align-items:center;gap:1rem;
-      padding:.9rem 1rem;border-radius:var(--r);
-      background:var(--dark3);
-      border:1px solid var(--border);
-      transition:border-color .3s;
-    }
-    .ex-item:hover{border-color:rgba(255,107,0,.2)}
-    .ex-icon{
-      width:38px;height:38px;flex-shrink:0;border-radius:8px;
-      background:rgba(255,107,0,.12);
-      display:flex;align-items:center;justify-content:center;font-size:1rem;
-    }
-    .ex-info{flex:1}
-    .ex-name{font-weight:600;font-size:.88rem;margin-bottom:.15rem}
-    .ex-sets{font-size:.75rem;color:var(--muted)}
-    .ex-done{
-      width:22px;height:22px;border-radius:50%;
-      border:2px solid var(--border2);cursor:pointer;
-      display:flex;align-items:center;justify-content:center;
-      font-size:.7rem;color:transparent;
-      transition:all .3s;flex-shrink:0;
-    }
-    .ex-done.checked{
-      background:var(--grad-fire2);border-color:transparent;
-      color:#fff;box-shadow:0 0 8px rgba(255,107,0,.4);
-    }
-
-    /* Scrollable on mobile */
-    @media(max-width:900px){
-      .quick-actions{grid-template-columns:repeat(2,1fr)}
-    }
-    @media(max-width:600px){
-      .quick-actions{grid-template-columns:repeat(2,1fr)}
-    }
-  </style>
 </head>
+
 <body id="dashPage">
 
-  <!-- ====== NAVIGATION ====== -->
+  <!-- ===== NAV ===== -->
   <nav class="nav">
-    <a href="index.html" class="logo">IRON<span style="color:#fff;-webkit-text-fill-color:#fff">CORE</span></a>
+    <a href="index.html" class="logo">IRONCORE</a>
     <ul class="nav-links">
       <li><a href="index.html">Home</a></li>
       <li><a href="plans.html">Plans</a></li>
-      <li><a href="#" id="logoutLink" style="color:var(--muted)">Logout</a></li>
+      <li><a href="#" id="logoutLink">Logout</a></li>
     </ul>
-    <div class="hamburger" id="hamburger">
-      <span></span><span></span><span></span>
-    </div>
   </nav>
 
-  <!-- ====== DASHBOARD ====== -->
+  <!-- ===== DASHBOARD ===== -->
   <div class="dashboard">
 
-    <!-- Header -->
-    <div class="dash-header reveal">
-      <p class="dash-sub">Good morning 🌅 &nbsp;—&nbsp; Monday, 13 April 2026</p>
+    <div class="dash-header">
       <h1 class="dash-greeting">
-        WELCOME BACK,<br>
-        <span class="fire" id="dashFirst">ATHLETE</span> 💪
+        Welcome back, 
+        <span id="dashFirst">Athlete</span> 💪
       </h1>
-      <div style="margin-top:.8rem">
-        <span class="plan-active-badge">
-          <span class="status-dot"></span>
-          Active &nbsp;·&nbsp; <span id="dashPlanBadge">Pro Plan</span>
-        </span>
+      <p class="dash-sub">Let’s crush today’s goals.</p>
+    </div>
+
+    <!-- USER PROFILE -->
+    <div class="dash-card" style="margin-bottom:20px;">
+      <h3 style="margin-bottom:10px;">Profile</h3>
+      <h2 id="dashName">Name</h2>
+      <p id="dashEmail">email@example.com</p>
+      <div id="dashAvatar" style="
+        width:50px;height:50px;border-radius:50%;
+        background:orange;color:#000;
+        display:flex;align-items:center;justify-content:center;
+        font-weight:bold;margin-top:10px;">
+        U
       </div>
     </div>
 
-    <!-- Stats cards -->
-    <div class="dash-grid reveal" data-delay="100">
-      <div class="dash-card">
-        <div class="dash-card-label">Member Since</div>
-        <div class="dash-card-value" id="dashSince">April 2026</div>
-        <div class="dash-card-sub">Day 13 of your journey</div>
-      </div>
-      <div class="dash-card">
-        <div class="dash-card-label">Current Plan</div>
-        <div class="dash-card-value fire" id="dashPlan">Pro Plan</div>
-        <div class="dash-card-sub">Next billing: May 13</div>
-      </div>
-      <div class="dash-card">
-        <div class="dash-card-label">Workouts This Month</div>
-        <div class="dash-card-value fire">9</div>
-        <div class="dash-card-sub">↑ 3 more than last month</div>
-      </div>
-      <div class="dash-card">
-        <div class="dash-card-label">Calories Burned</div>
-        <div class="dash-card-value fire">12,480</div>
-        <div class="dash-card-sub">This month's total</div>
-      </div>
-      <div class="dash-card">
-        <div class="dash-card-label">Personal Best</div>
-        <div class="dash-card-value">120 kg</div>
-        <div class="dash-card-sub">Deadlift — set this week</div>
-      </div>
-      <div class="dash-card">
-        <div class="dash-card-label">Streak</div>
-        <div class="dash-card-value fire">🔥 5 Days</div>
-        <div class="dash-card-sub">Keep it going!</div>
-      </div>
+    <!-- PLAN INFO -->
+    <div class="dash-card">
+      <h3>Your Plan</h3>
+      <p id="dashPlan">Basic Plan</p>
+      <p>Status: <span id="dashStatus">Active</span></p>
+      <p>Member Since: <span id="dashSince">April 2026</span></p>
+
+      <button id="upgradeBtn" style="margin-top:10px;">
+        Upgrade Plan 🚀
+      </button>
     </div>
 
-    <!-- Calendar strip -->
-    <div class="cal-strip reveal" data-delay="150">
-      <div class="cal-day has-workout"><div class="dow">MON</div><div class="dom">7</div></div>
-      <div class="cal-day has-workout"><div class="dow">TUE</div><div class="dom">8</div></div>
-      <div class="cal-day"><div class="dow">WED</div><div class="dom">9</div></div>
-      <div class="cal-day has-workout"><div class="dow">THU</div><div class="dom">10</div></div>
-      <div class="cal-day has-workout"><div class="dow">FRI</div><div class="dom">11</div></div>
-      <div class="cal-day"><div class="dow">SAT</div><div class="dom">12</div></div>
-      <div class="cal-day today has-workout"><div class="dow">SUN</div><div class="dom">13</div></div>
-      <div class="cal-day"><div class="dow">MON</div><div class="dom">14</div></div>
-      <div class="cal-day"><div class="dow">TUE</div><div class="dom">15</div></div>
-      <div class="cal-day"><div class="dow">WED</div><div class="dom">16</div></div>
+    <!-- LOGOUT -->
+    <div style="margin-top:30px;">
+      <button id="logoutBtn">Logout</button>
     </div>
 
-    <!-- Quick actions -->
-    <div class="quick-actions reveal" data-delay="200">
-      <div class="qa-card" onclick="window.location.href='plans.html'">
-        <div class="qa-icon">📋</div>
-        <div class="qa-label">Book a Class</div>
-      </div>
-      <div class="qa-card" onclick="alert('Trainer chat coming soon!')">
-        <div class="qa-icon">💬</div>
-        <div class="qa-label">Chat Trainer</div>
-      </div>
-      <div class="qa-card" onclick="alert('Nutrition log coming soon!')">
-        <div class="qa-icon">🥗</div>
-        <div class="qa-label">Log Meal</div>
-      </div>
-      <div class="qa-card" onclick="alert('Progress photos coming soon!')">
-        <div class="qa-icon">📸</div>
-        <div class="qa-label">Progress Pics</div>
-      </div>
-    </div>
+  </div>
 
-    <!-- Main 2-col grid -->
-    <div class="dash-main">
-
-      <!-- Left: today's workout -->
-      <div>
-        <div class="workout-card reveal" data-delay="250">
-          <div class="workout-header">
-            <div>
-              <div style="font-size:.72rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:.3rem">Today's Workout</div>
-              <h4>Push Day A</h4>
-            </div>
-            <span class="workout-tag tag-strength">Strength</span>
-          </div>
-
-          <div class="exercise-list">
-            <div class="ex-item">
-              <div class="ex-icon">🏋️</div>
-              <div class="ex-info">
-                <div class="ex-name">Bench Press</div>
-                <div class="ex-sets">4 sets × 8 reps &nbsp;·&nbsp; 80 kg</div>
-              </div>
-              <div class="ex-done" onclick="toggleDone(this)" title="Mark done">✓</div>
-            </div>
-            <div class="ex-item">
-              <div class="ex-icon">💪</div>
-              <div class="ex-info">
-                <div class="ex-name">Overhead Press</div>
-                <div class="ex-sets">3 sets × 10 reps &nbsp;·&nbsp; 50 kg</div>
-              </div>
-              <div class="ex-done" onclick="toggleDone(this)" title="Mark done">✓</div>
-            </div>
-            <div class="ex-item">
-              <div class="ex-icon">🔼</div>
-              <div class="ex-info">
-                <div class="ex-name">Incline DB Fly</div>
-                <div class="ex-sets">3 sets × 12 reps &nbsp;·&nbsp; 24 kg</div>
-              </div>
-              <div class="ex-done" onclick="toggleDone(this)" title="Mark done">✓</div>
-            </div>
-            <div class="ex-item">
-              <div class="ex-icon">⬇️</div>
-              <div class="ex-info">
-                <div class="ex-name">Tricep Pushdown</div>
-                <div class="ex-sets">3 sets × 15 reps &nbsp;·&nbsp; Cable</div>
-              </div>
-              <div class="ex-done" onclick="toggleDone(this)" title="Mark done">✓</div>
-            </div>
-            <div class="ex-item">
-              <div class="ex-icon">🏃</div>
-              <div class="ex-info">
-                <div class="ex-name">Treadmill Cooldown</div>
-                <div class="ex-sets">10 min &nbsp;·&nbsp; Zone 2</div>
-              </div>
-              <div class="ex-done" onclick="toggleDone(this)" title="Mark done">✓</div>
-            </div>
-          </div>
-
-          <div style="display:flex;gap:.8rem;margin-top:1.5rem;flex-wrap:wrap">
-            <button class="btn btn-fire btn-sm" onclick="alert('Workout started! 🔥')">▶ Start Workout</button>
-            <button class="btn btn-outline btn-sm" onclick="alert('Rest day activated.')">Take Rest Day</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Right: profile + progress -->
-      <div>
-        <!-- Profile card -->
-        <div class="dash-panel reveal" data-delay="300" style="margin-bottom:1.5rem">
-          <h3>My Profile</h3>
-          <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem">
-            <div style="
-              width:60px;height:60px;border-radius:50%;
-              background:var(--grad-fire);
-              display:flex;align-items:center;justify-content:center;
-              font-family:var(--font-d);font-size:2rem;color:#fff;
-              box-shadow:var(--glow-sm);flex-shrink:0;
-            " id="dashAvatar">A</div>
-            <div>
-              <div style="font-weight:700;font-size:1rem" id="dashName">Alex Johnson</div>
-              <div style="font-size:.8rem;color:var(--muted)" id="dashEmail">alex@example.com</div>
-            </div>
-          </div>
-
-          <div style="display:flex;flex-direction:column;gap:.6rem;margin-bottom:1.5rem">
-            <div style="display:flex;justify-content:space-between;font-size:.85rem">
-              <span style="color:var(--muted)">Membership</span>
-              <span style="font-weight:600;color:var(--orange)" id="dashPlan2">Pro Plan</span>
-            </div>
-            <div style="display:flex;justify-content:space-between;font-size:.85rem">
-              <span style="color:var(--muted)">Status</span>
-              <span style="color:#22dd88;font-weight:600"><span class="status-dot"></span>Active</span>
-            </div>
-            <div style="display:flex;justify-content:space-between;font-size:.85rem">
-              <span style="color:var(--muted)">Member Since</span>
-              <span style="font-weight:600">April 2026</span>
-            </div>
-            <div style="display:flex;justify-content:space-between;font-size:.85rem">
-              <span style="color:var(--muted)">Next Session</span>
-              <span style="font-weight:600">Tomorrow, 7 AM</span>
-            </div>
-          </div>
-
-          <div class="dash-actions">
-            <button class="btn btn-fire" id="upgradeBtn">⬆ Upgrade Plan</button>
-            <button class="btn btn-outline" id="logoutBtn">🚪 Logout</button>
-          </div>
-        </div>
-
-        <!-- Goals & progress -->
-        <div class="dash-panel reveal" data-delay="400">
-          <h3>Progress Goals</h3>
-
-          <div class="progress-item">
-            <div class="progress-header">
-              <span class="progress-label">Weight Loss Target</span>
-              <span class="progress-val">72%</span>
-            </div>
-            <div class="progress-bar"><div class="progress-fill" data-width="72%"></div></div>
-          </div>
-
-          <div class="progress-item">
-            <div class="progress-header">
-              <span class="progress-label">Strength Goal</span>
-              <span class="progress-val">85%</span>
-            </div>
-            <div class="progress-bar"><div class="progress-fill" data-width="85%"></div></div>
-          </div>
-
-          <div class="progress-item">
-            <div class="progress-header">
-              <span class="progress-label">Cardio Endurance</span>
-              <span class="progress-val">60%</span>
-            </div>
-            <div class="progress-bar"><div class="progress-fill" data-width="60%"></div></div>
-          </div>
-
-          <div class="progress-item">
-            <div class="progress-header">
-              <span class="progress-label">Monthly Classes</span>
-              <span class="progress-val">9 / 12</span>
-            </div>
-            <div class="progress-bar"><div class="progress-fill" data-width="75%"></div></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Recent activity -->
-    <div class="dash-panel reveal" style="margin-top:2rem" data-delay="200">
-      <h3>Recent Activity</h3>
-      <div class="activity-log">
-        <div class="activity-item">
-          <div class="activity-icon">🏋️</div>
-          <div class="activity-detail">
-            <div class="activity-name">Push Day A — Completed</div>
-            <div class="activity-time">Today &nbsp;·&nbsp; 6:30 AM</div>
-          </div>
-          <div class="activity-cal">420 kcal</div>
-        </div>
-        <div class="activity-item">
-          <div class="activity-icon">🏃</div>
-          <div class="activity-detail">
-            <div class="activity-name">30 min Treadmill HIIT</div>
-            <div class="activity-time">Yesterday &nbsp;·&nbsp; 7:00 AM</div>
-          </div>
-          <div class="activity-cal">380 kcal</div>
-        </div>
-        <div class="activity-item">
-          <div class="activity-icon">🎯</div>
-          <div class="activity-detail">
-            <div class="activity-name">Personal Training — Coach Rohan</div>
-            <div class="activity-time">11 Apr &nbsp;·&nbsp; 8:00 AM</div>
-          </div>
-          <div class="activity-cal">510 kcal</div>
-        </div>
-        <div class="activity-item">
-          <div class="activity-icon">🧘</div>
-          <div class="activity-detail">
-            <div class="activity-name">Mobility & Stretching Class</div>
-            <div class="activity-time">10 Apr &nbsp;·&nbsp; 6:00 PM</div>
-          </div>
-          <div class="activity-cal">120 kcal</div>
-        </div>
-        <div class="activity-item">
-          <div class="activity-icon">🏋️</div>
-          <div class="activity-detail">
-            <div class="activity-name">Pull Day B — Completed</div>
-            <div class="activity-time">8 Apr &nbsp;·&nbsp; 7:15 AM</div>
-          </div>
-          <div class="activity-cal">460 kcal</div>
-        </div>
-      </div>
-    </div>
-
-  </div><!-- /dashboard -->
-
+  <!-- ===== MAIN SCRIPT ONLY ===== -->
   <script src="script.js"></script>
-  <script>
-    // Logout from nav link too
-    document.getElementById('logoutLink').addEventListener('click', e => {
-      e.preventDefault();
-      if (typeof showToast === 'function') showToast('Logged out. See you soon! 👋', 'success');
-      setTimeout(() => {
-        localStorage.removeItem('icUser');
-        window.location.href = 'index.html';
-      }, 1200);
-    });
 
-    // Populate secondary plan text
-    const u2 = JSON.parse(localStorage.getItem('icUser') || '{}');
-    const p2 = document.getElementById('dashPlan2');
-    if (p2 && u2.plan) p2.textContent = u2.plan;
-
-    // Avatar letter
-    const av = document.getElementById('dashAvatar');
-    if (av && u2.name) av.textContent = u2.name.charAt(0).toUpperCase();
-
-    // Check-off exercises
-    function toggleDone(el) {
-      el.classList.toggle('checked');
-    }
-  </script>
 </body>
 </html>
