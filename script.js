@@ -1,15 +1,10 @@
-/* ================================================
-   IRONCORE FITNESS — script.js
-   Pure JS, no frameworks
-   ================================================ */
-
 'use strict';
 
 // ── Utility ──────────────────────────────────────
 const $ = (sel, ctx = document) => ctx.querySelector(sel);
 const $$ = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
 
-// ── Nav: scroll + hamburger ───────────────────────
+// ── Nav ──────────────────────────────────────────
 (function initNav() {
   const nav  = $('.nav');
   const burger = $('.hamburger');
@@ -34,46 +29,7 @@ const $$ = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
   }
 })();
 
-// ── Scroll reveal ─────────────────────────────────
-(function initReveal() {
-  const els = $$('.reveal');
-  if (!els.length) return;
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        const delay = +e.target.dataset.delay || 0;
-        setTimeout(() => e.target.classList.add('visible'), delay);
-        io.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.12 });
-  els.forEach(el => io.observe(el));
-})();
-
-// ── Counter animation ─────────────────────────────
-(function initCounters() {
-  const els = $$('[data-count]');
-  if (!els.length) return;
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (!e.isIntersecting) return;
-      const el  = e.target;
-      const end = parseInt(el.dataset.count);
-      const suf = el.dataset.suffix || '';
-      let cur   = 0;
-      const step = Math.max(1, Math.ceil(end / 60));
-      const timer = setInterval(() => {
-        cur = Math.min(cur + step, end);
-        el.textContent = cur.toLocaleString() + suf;
-        if (cur >= end) clearInterval(timer);
-      }, 22);
-      io.unobserve(el);
-    });
-  }, { threshold: 0.6 });
-  els.forEach(el => io.observe(el));
-})();
-
-// ── Toast notification ────────────────────────────
+// ── Toast ────────────────────────────────────────
 function showToast(msg, type = 'success') {
   let toast = $('.toast');
   if (!toast) {
@@ -88,10 +44,10 @@ function showToast(msg, type = 'success') {
   setTimeout(() => toast.classList.remove('show'), 3200);
 }
 
-// ── Auth Page (login.html) ────────────────────────
+// ── AUTH SYSTEM (FIXED) ──────────────────────────
 (function initAuth() {
-  const tabs    = $$('.auth-tab');
-  const forms   = $$('.auth-form');
+  const tabs = $$('.auth-tab');
+  const forms = $$('.auth-form');
   if (!tabs.length) return;
 
   // Tab switch
@@ -105,215 +61,152 @@ function showToast(msg, type = 'success') {
     });
   });
 
-  // Password toggle
-  $$('.toggle-pass').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const input = btn.previousElementSibling;
-      if (!input) return;
-      const isText = input.type === 'text';
-      input.type = isText ? 'password' : 'text';
-      btn.textContent = isText ? '👁' : '🙈';
-    });
-  });
-
-  // Login form
+  // Login
   const loginForm = $('#loginForm');
   if (loginForm) {
     loginForm.addEventListener('submit', e => {
       e.preventDefault();
+
       const email = $('#loginEmail').value.trim();
       const pass  = $('#loginPass').value;
-      if (!email || !pass) { showToast('Please fill in all fields.', 'error'); return; }
-      if (!email.includes('@')) { showToast('Enter a valid email.', 'error'); return; }
-      if (pass.length < 4)  { showToast('Password too short.', 'error'); return; }
 
-      // Save dummy user
+      let users = JSON.parse(localStorage.getItem("users")) || [];
+
+      const foundUser = users.find(
+        u => u.email === email && u.password === pass
+      );
+
+      if (!foundUser) {
+        showToast('Invalid email or password.', 'error');
+        return;
+      }
+
       const user = {
-        name:   'Alex Johnson',
-        email,
-        plan:   'Pro Plan',
+        name: foundUser.name,
+        email: foundUser.email,
+        plan: foundUser.plan || 'Basic Plan',
         status: 'Active',
-        since:  'April 2026',
+        since: 'April 2026',
         weight: '78 kg',
-        goal:   'Build Muscle',
+        goal: 'Build Muscle'
       };
+
       localStorage.setItem('icUser', JSON.stringify(user));
-      showToast('Welcome back, Alex! 🔥', 'success');
-      const btn = loginForm.querySelector('.auth-submit');
-      btn.textContent = 'Redirecting…';
-      btn.disabled = true;
-      setTimeout(() => window.location.href = 'dashboard.html', 1400);
+
+      showToast(`Welcome back, ${user.name.split(" ")[0]}! 🔥`, 'success');
+
+      setTimeout(() => window.location.href = 'dashboard.html', 1200);
     });
   }
 
-  // Signup form
+  // Signup
   const signupForm = $('#signupForm');
   if (signupForm) {
     signupForm.addEventListener('submit', e => {
       e.preventDefault();
+
       const name  = $('#signupName').value.trim();
       const email = $('#signupEmail').value.trim();
       const pass  = $('#signupPass').value;
-      if (!name || !email || !pass) { showToast('Please fill in all fields.', 'error'); return; }
-      if (!email.includes('@')) { showToast('Enter a valid email.', 'error'); return; }
-      if (pass.length < 6) { showToast('Password must be 6+ characters.', 'error'); return; }
+
+      if (!name || !email || !pass) {
+        showToast('Please fill all fields.', 'error');
+        return;
+      }
+
+      let users = JSON.parse(localStorage.getItem("users")) || [];
+
+      // prevent duplicate
+      if (users.find(u => u.email === email)) {
+        showToast('User already exists.', 'error');
+        return;
+      }
+
+      users.push({
+        name,
+        email,
+        password: pass,
+        plan: 'Basic Plan'
+      });
+
+      localStorage.setItem("users", JSON.stringify(users));
 
       const user = {
         name,
         email,
-        plan:   'Basic Plan',
+        plan: 'Basic Plan',
         status: 'Active',
-        since:  'April 2026',
+        since: 'April 2026',
         weight: '—',
-        goal:   'Get Fit',
+        goal: 'Get Fit'
       };
+
       localStorage.setItem('icUser', JSON.stringify(user));
-      showToast(`Account created! Welcome, ${name.split(' ')[0]}! 💪`, 'success');
-      const btn = signupForm.querySelector('.auth-submit');
-      btn.textContent = 'Creating account…';
-      btn.disabled = true;
-      setTimeout(() => window.location.href = 'dashboard.html', 1400);
+
+      showToast(`Welcome, ${name.split(" ")[0]}! 💪`, 'success');
+
+      setTimeout(() => window.location.href = 'dashboard.html', 1200);
     });
   }
 })();
 
-// ── Plan selection (plans.html) ───────────────────
+// ── PLAN SELECTION ───────────────────────────────
 (function initPlans() {
   const cards = $$('.plan-card[data-plan]');
   if (!cards.length) return;
 
-  // Pre-select from localStorage
   const user = JSON.parse(localStorage.getItem('icUser') || '{}');
-  const saved = user.plan;
 
   cards.forEach(card => {
     const planName = card.dataset.plan;
     const btn = card.querySelector('.plan-btn');
 
-    if (saved && saved === planName) {
-      card.classList.add('selected');
-      if (btn) btn.textContent = '✓ Current Plan';
-    }
-
     card.addEventListener('click', () => {
-      cards.forEach(c => {
-        c.classList.remove('selected');
-        const b = c.querySelector('.plan-btn');
-        if (b && b.textContent.includes('Current')) b.textContent = 'Select Plan';
-      });
+      cards.forEach(c => c.classList.remove('selected'));
       card.classList.add('selected');
-      if (btn) btn.textContent = '✓ Current Plan';
 
       if (user) {
         user.plan = planName;
         localStorage.setItem('icUser', JSON.stringify(user));
       }
-      showToast(`${planName} selected! 🏋️`, 'success');
+
+      showToast(`${planName} selected! 🏋️`);
     });
   });
 })();
 
-// ── Dashboard (dashboard.html) ────────────────────
+// ── DASHBOARD ────────────────────────────────────
 (function initDashboard() {
   if (!$('#dashPage')) return;
 
-  const raw  = localStorage.getItem('icUser');
-  if (!raw) { window.location.href = 'login.html'; return; }
-  const user = JSON.parse(raw);
+  const user = JSON.parse(localStorage.getItem('icUser'));
 
-  // Populate
-  const set = (id, val) => { const el = $(id); if (el) el.textContent = val; };
-  const firstName = (user.name || 'Athlete').split(' ')[0];
-
-  set('#dashName',   user.name   || '—');
-  set('#dashFirst',  firstName);
-  set('#dashEmail',  user.email  || '—');
-  set('#dashPlan',   user.plan   || '—');
-  set('#dashStatus', user.status || '—');
-  set('#dashSince',  user.since  || '—');
-  set('#dashPlanBadge', user.plan || '—');
-
-  // Plan badge colour
-  const badge = $('#dashPlanBadge');
-  if (badge && user.plan && user.plan.includes('Pro')) {
-    badge.style.background = 'var(--grad-fire)';
-    badge.style.color = '#fff';
-    badge.style.border = 'none';
+  if (!user) {
+    window.location.href = 'login.html';
+    return;
   }
 
-  // Animate progress bars
-  setTimeout(() => {
-    $$('.progress-fill').forEach(bar => {
-      bar.style.width = bar.dataset.width || '0%';
-    });
-  }, 400);
+  const set = (id, val) => {
+    const el = $(id);
+    if (el) el.textContent = val;
+  };
 
-  // Upgrade btn
-  const upgradeBtn = $('#upgradeBtn');
-  if (upgradeBtn) {
-    upgradeBtn.addEventListener('click', () => {
-      window.location.href = 'plans.html';
-    });
-  }
+  const first = user.name.split(" ")[0];
+
+  set('#dashName', user.name);
+  set('#dashFirst', first);
+  set('#dashEmail', user.email);
+  set('#dashPlan', user.plan);
+  set('#dashStatus', user.status);
+  set('#dashSince', user.since);
+  set('#dashPlanBadge', user.plan);
 
   // Logout
   const logoutBtn = $('#logoutBtn');
   if (logoutBtn) {
     logoutBtn.addEventListener('click', () => {
-      showToast('Logged out. See you soon! 👋', 'success');
-      setTimeout(() => {
-        localStorage.removeItem('icUser');
-        window.location.href = 'index.html';
-      }, 1200);
+      localStorage.removeItem('icUser');
+      window.location.href = 'index.html';
     });
   }
 })();
-
-// ── FAQ accordion ─────────────────────────────────
-(function initFAQ() {
-  $$('.faq-q').forEach(q => {
-    q.addEventListener('click', () => {
-      const item = q.parentElement;
-      const isOpen = item.classList.contains('open');
-      $$('.faq-item.open').forEach(i => i.classList.remove('open'));
-      if (!isOpen) item.classList.add('open');
-    });
-  });
-})();
-
-// ── Smooth anchor scroll ──────────────────────────
-document.addEventListener('click', e => {
-  const link = e.target.closest('a[href^="#"]');
-  if (!link) return;
-  const target = document.querySelector(link.getAttribute('href'));
-  if (!target) return;
-  e.preventDefault();
-  target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-});
-
-// ── Button ripple effect ──────────────────────────
-document.addEventListener('click', e => {
-  const btn = e.target.closest('.btn');
-  if (!btn) return;
-  const r = document.createElement('span');
-  const rect = btn.getBoundingClientRect();
-  const size = Math.max(rect.width, rect.height);
-  r.style.cssText = `
-    position:absolute;border-radius:50%;pointer-events:none;
-    width:${size}px;height:${size}px;
-    left:${e.clientX - rect.left - size/2}px;
-    top:${e.clientY - rect.top - size/2}px;
-    background:rgba(255,255,255,.25);
-    transform:scale(0);animation:ripple .6s linear;
-  `;
-  // add ripple keyframe once
-  if (!document.getElementById('ripple-style')) {
-    const s = document.createElement('style');
-    s.id = 'ripple-style';
-    s.textContent = '@keyframes ripple{to{transform:scale(2.5);opacity:0}}';
-    document.head.appendChild(s);
-  }
-  btn.style.position = btn.style.position || 'relative';
-  btn.appendChild(r);
-  r.addEventListener('animationend', () => r.remove());
-});
