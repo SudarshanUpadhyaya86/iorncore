@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login / Sign Up — IronCore Fitness</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Extra neon glow on the auth card */
+    .auth-card{
+      position:relative;
+    }
+    .auth-card::before{
+      content:'';
+      position:absolute;inset:-1px;
+      border-radius:calc(var(--r2) + 1px);
+      background:var(--grad-fire);
+      z-index:-1;
+      opacity:.25;
+      filter:blur(8px);
+      transition:opacity .4s;
+    }
+    .auth-card:hover::before{ opacity:.45 }
+
+    /* Strength indicator */
+    .strength-bar{
+      height:4px;border-radius:2px;
+      background:var(--dark3);margin-top:.5rem;
+      overflow:hidden;
+    }
+    .strength-fill{
+      height:100%;width:0;border-radius:2px;
+      transition:width .4s,background .4s;
+    }
+    .strength-text{font-size:.72rem;color:var(--muted);margin-top:.3rem}
+
+    /* Floating particles */
+    .particle{
+      position:fixed;border-radius:50%;pointer-events:none;
+      background:var(--grad-fire);opacity:.12;
+      animation:float-particle linear infinite;
+    }
+    @keyframes float-particle{
+      from{transform:translateY(100vh) scale(0)}
+      to{transform:translateY(-10vh) scale(1)}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient particles (decorative) -->
+  <div class="particle" style="width:6px;height:6px;left:15%;animation-duration:14s;animation-delay:0s"></div>
+  <div class="particle" style="width:10px;height:10px;left:35%;animation-duration:18s;animation-delay:3s"></div>
+  <div class="particle" style="width:4px;height:4px;left:60%;animation-duration:12s;animation-delay:6s"></div>
+  <div class="particle" style="width:8px;height:8px;left:80%;animation-duration:20s;animation-delay:1s"></div>
+  <div class="particle" style="width:5px;height:5px;left:50%;animation-duration:16s;animation-delay:8s"></div>
+
+  <!-- ====== NAVIGATION ====== -->
+  <nav class="nav">
+    <a href="index.html" class="logo">IRON<span style="color:#fff;-webkit-text-fill-color:#fff">CORE</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="plans.html">Plans</a></li>
+      <li><a href="login.html">Login</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+
+  <!-- ====== AUTH PAGE ====== -->
+  <div class="auth-page">
+    <div class="hero-grid"></div>
+
+    <div class="auth-box">
+      <div class="auth-logo">IRONCORE</div>
+      <p class="auth-tagline">Your transformation starts here. 💪</p>
+
+      <div class="auth-card">
+        <!-- Tabs -->
+        <div class="auth-tabs">
+          <div class="auth-tab active" data-form="loginForm">Login</div>
+          <div class="auth-tab" data-form="signupForm">Sign Up</div>
+        </div>
+
+        <!-- ── LOGIN FORM ── -->
+        <form class="auth-form active" id="loginForm" novalidate>
+          <div class="form-group">
+            <label class="form-label" for="loginEmail">Email Address</label>
+            <input
+              class="form-input" type="email" id="loginEmail"
+              placeholder="you@example.com" autocomplete="email" required
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="loginPass">Password</label>
+            <div class="input-wrap">
+              <input
+                class="form-input" type="password" id="loginPass"
+                placeholder="Enter your password" autocomplete="current-password" required
+              />
+              <button type="button" class="toggle-pass" title="Show/hide password">👁</button>
+            </div>
+          </div>
+
+          <div style="display:flex;justify-content:flex-end;margin-bottom:1.5rem">
+            <a href="#" style="font-size:.78rem;color:var(--orange)">Forgot password?</a>
+          </div>
+
+          <button type="submit" class="btn btn-fire auth-submit">
+            Login to IronCore 🔥
+          </button>
+
+          <div class="auth-divider">or</div>
+
+          <p style="text-align:center;font-size:.82rem;color:var(--muted)">
+            Don't have an account?&nbsp;
+            <a href="#" id="toSignup" style="color:var(--orange);font-weight:600">Sign up free</a>
+          </p>
+        </form>
+
+        <!-- ── SIGNUP FORM ── -->
+        <form class="auth-form" id="signupForm" novalidate>
+          <div class="form-group">
+            <label class="form-label" for="signupName">Full Name</label>
+            <input
+              class="form-input" type="text" id="signupName"
+              placeholder="Alex Johnson" autocomplete="name" required
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="signupEmail">Email Address</label>
+            <input
+              class="form-input" type="email" id="signupEmail"
+              placeholder="you@example.com" autocomplete="email" required
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="signupPass">Create Password</label>
+            <div class="input-wrap">
+              <input
+                class="form-input" type="password" id="signupPass"
+                placeholder="Min. 6 characters" autocomplete="new-password"
+                required oninput="checkStrength(this)"
+              />
+              <button type="button" class="toggle-pass" title="Show/hide password">👁</button>
+            </div>
+            <div class="strength-bar">
+              <div class="strength-fill" id="strengthFill"></div>
+            </div>
+            <div class="strength-text" id="strengthText">Enter a password</div>
+          </div>
+
+          <div class="form-group" style="display:flex;align-items:flex-start;gap:.7rem;margin-top:.5rem">
+            <input type="checkbox" id="terms" style="margin-top:3px;accent-color:var(--orange)" />
+            <label for="terms" style="font-size:.8rem;color:var(--muted);cursor:pointer">
+              I agree to the
+              <a href="#" style="color:var(--orange)">Terms of Service</a> and
+              <a href="#" style="color:var(--orange)">Privacy Policy</a>
+            </label>
+          </div>
+
+          <button type="submit" class="btn btn-fire auth-submit" style="margin-top:1.5rem">
+            Create Account 🚀
+          </button>
+
+          <div class="auth-divider">or</div>
+
+          <p style="text-align:center;font-size:.82rem;color:var(--muted)">
+            Already a member?&nbsp;
+            <a href="#" id="toLogin" style="color:var(--orange);font-weight:600">Log in</a>
+          </p>
+        </form>
+      </div>
+
+      <!-- Trust badges -->
+      <div style="display:flex;justify-content:center;gap:1.5rem;margin-top:1.8rem;flex-wrap:wrap">
+        <span style="font-size:.75rem;color:var(--muted)">🔒 Secure &amp; Encrypted</span>
+        <span style="font-size:.75rem;color:var(--muted)">🛡️ No spam, ever</span>
+        <span style="font-size:.75rem;color:var(--muted)">✅ Cancel anytime</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    // Quick-link helpers: "Sign up free" / "Log in" text links
+    document.getElementById('toSignup').addEventListener('click', e => {
+      e.preventDefault();
+      document.querySelectorAll('.auth-tab')[1].click();
+    });
+    document.getElementById('toLogin').addEventListener('click', e => {
+      e.preventDefault();
+      document.querySelectorAll('.auth-tab')[0].click();
+    });
+
+    // Password strength checker
+    function checkStrength(input) {
+      const val = input.value;
+      const fill = document.getElementById('strengthFill');
+      const text = document.getElementById('strengthText');
+      let score = 0;
+      if (val.length >= 6)  score++;
+      if (val.length >= 10) score++;
+      if (/[A-Z]/.test(val)) score++;
+      if (/[0-9]/.test(val)) score++;
+      if (/[^A-Za-z0-9]/.test(val)) score++;
+
+      const levels = [
+        { w:'0%',   bg:'transparent', t:'Enter a password' },
+        { w:'25%',  bg:'#cc2200',     t:'Weak' },
+        { w:'50%',  bg:'#FF6B00',     t:'Fair' },
+        { w:'75%',  bg:'#FFAA00',     t:'Good' },
+        { w:'100%', bg:'#22dd88',     t:'Strong 💪' },
+      ];
+      const lvl = levels[Math.min(score, 4)];
+      fill.style.width = lvl.w;
+      fill.style.background = lvl.bg;
+      text.textContent = lvl.t;
+      text.style.color = lvl.bg === 'transparent' ? 'var(--muted)' : lvl.bg;
+    }
+
+    // Override signup to check terms checkbox
+    const signupForm = document.getElementById('signupForm');
+    signupForm.addEventListener('submit', function checkTerms(e) {
+      const terms = document.getElementById('terms');
+      if (!terms.checked) {
+        e.stopImmediatePropagation();
+        e.preventDefault();
+        // showToast is defined in script.js
+        if (typeof showToast === 'function')
+          showToast('Please accept the Terms of Service.', 'error');
+      }
+    }, true); // capture phase → runs before script.js handler
+  </script>
+</body>
+</html>

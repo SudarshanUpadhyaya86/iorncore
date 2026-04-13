@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Membership Plans — IronCore Fitness</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .nav-links a[href="plans.html"]{ color:var(--orange) }
+    /* Comparison table */
+    .compare-table{
+      width:100%;max-width:860px;margin:3rem auto 0;
+      border-collapse:collapse;
+      border:1px solid var(--border);border-radius:var(--r2);
+      overflow:hidden;
+    }
+    .compare-table th,.compare-table td{
+      padding:1rem 1.5rem;
+      text-align:center;font-size:.88rem;
+      border-bottom:1px solid var(--border);
+    }
+    .compare-table th{
+      background:var(--card-bg);
+      font-family:var(--font-d);font-size:1.1rem;letter-spacing:1px;
+      color:var(--text);
+    }
+    .compare-table th:first-child,.compare-table td:first-child{
+      text-align:left;color:var(--muted);font-weight:500;
+    }
+    .compare-table td.yes{color:var(--orange);font-weight:700;font-size:1.1rem}
+    .compare-table td.no{color:#333;font-size:1.1rem}
+    .compare-table thead tr th:last-child{
+      background:linear-gradient(135deg,rgba(255,107,0,.15),rgba(255,45,0,.05));
+      color:var(--orange);
+    }
+    .compare-table tbody tr:last-child td{border-bottom:none}
+    .compare-table tbody tr:hover td{background:rgba(255,107,0,.03)}
+
+    /* Guarantee strip */
+    .guarantee{
+      display:flex;align-items:center;justify-content:center;
+      gap:3rem;padding:3rem 6%;
+      background:var(--dark);flex-wrap:wrap;
+    }
+    .g-item{display:flex;align-items:center;gap:.8rem;font-size:.88rem;color:var(--muted)}
+    .g-icon{font-size:1.4rem}
+    .g-item strong{color:var(--text)}
+  </style>
+</head>
+<body>
+
+  <!-- ====== NAVIGATION ====== -->
+  <nav class="nav">
+    <a href="index.html" class="logo">IRON<span style="color:#fff;-webkit-text-fill-color:#fff">CORE</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html#features">Features</a></li>
+      <li><a href="index.html#testimonials">Reviews</a></li>
+      <li><a href="plans.html">Plans</a></li>
+      <li><a href="login.html" class="nav-btn">Join Now</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+
+  <!-- ====== PAGE HERO ====== -->
+  <div class="page-hero">
+    <div class="hero-grid"></div>
+    <span class="section-label reveal">Choose Your Path</span>
+    <h1 class="section-title reveal" data-delay="100">
+      PLANS BUILT FOR<br><span class="fire">EVERY WARRIOR</span>
+    </h1>
+    <div class="rule reveal" data-delay="200"></div>
+    <p class="section-sub reveal" data-delay="300" style="max-width:520px;margin-inline:auto">
+      No contracts. No hidden fees. Just the cleanest, most results-driven
+      membership plans in the city. Pick yours and start today.
+    </p>
+  </div>
+
+  <!-- ====== GUARANTEE STRIP ====== -->
+  <div class="guarantee">
+    <div class="g-item"><span class="g-icon">🔓</span><div><strong>No Lock-in</strong><br>Cancel anytime</div></div>
+    <div class="g-item"><span class="g-icon">💳</span><div><strong>Flexible Payment</strong><br>UPI, card, net banking</div></div>
+    <div class="g-item"><span class="g-icon">🔄</span><div><strong>Easy Upgrade</strong><br>Switch plans anytime</div></div>
+    <div class="g-item"><span class="g-icon">🛡️</span><div><strong>30-Day Guarantee</strong><br>Full refund if unsatisfied</div></div>
+  </div>
+
+  <!-- ====== PLANS FULL ====== -->
+  <section class="plans-full">
+    <div class="plans-full-grid">
+
+      <!-- BASIC PLAN -->
+      <div class="plan-card reveal" data-delay="0" data-plan="Basic Plan">
+        <div class="plan-name">Basic</div>
+        <div class="plan-price"><sup>₹</sup>15</div>
+        <div class="plan-period">per month &nbsp;·&nbsp; Billed monthly</div>
+        <div class="plan-divider"></div>
+        <ul class="plan-features">
+          <li><span class="check">✓</span> Gym access — 6 AM to 10 PM</li>
+          <li><span class="check">✓</span> All cardio & strength equipment</li>
+          <li><span class="check">✓</span> Group classes — 5 per week</li>
+          <li><span class="check">✓</span> Locker room & shower facilities</li>
+          <li><span class="check">✓</span> IronCore App (standard)</li>
+          <li><span class="check">✓</span> Progress tracking tools</li>
+          <li class="muted-feat"><span class="cross">✕</span> Personal trainer sessions</li>
+          <li class="muted-feat"><span class="cross">✕</span> Nutrition coaching</li>
+          <li class="muted-feat"><span class="cross">✕</span> 24/7 gym access</li>
+          <li class="muted-feat"><span class="cross">✕</span> Recovery & spa access</li>
+        </ul>
+        <button class="btn btn-outline plan-btn" onclick="selectPlan(this,'Basic Plan')">Select Plan</button>
+      </div>
+
+      <!-- PRO PLAN -->
+      <div class="plan-card featured reveal" data-delay="160" data-plan="Pro Plan">
+        <div class="plan-badge">🔥 Most Popular</div>
+        <div class="plan-name">Pro</div>
+        <div class="plan-price"><sup>₹</sup>20</div>
+        <div class="plan-period">per month &nbsp;·&nbsp; Billed monthly</div>
+        <div class="plan-divider"></div>
+        <ul class="plan-features">
+          <li><span class="check">✓</span> 24 / 7 gym access — all days</li>
+          <li><span class="check">✓</span> All cardio & strength equipment</li>
+          <li><span class="check">✓</span> Unlimited group & specialty classes</li>
+          <li><span class="check">✓</span> Premium locker room & towel service</li>
+          <li><span class="check">✓</span> IronCore App (premium + AI coaching)</li>
+          <li><span class="check">✓</span> Advanced performance analytics</li>
+          <li><span class="check">✓</span> 4 personal trainer sessions / month</li>
+          <li><span class="check">✓</span> Monthly nutrition consultation</li>
+          <li><span class="check">✓</span> Guest passes — 2 per month</li>
+          <li><span class="check">✓</span> Sauna & recovery spa access</li>
+        </ul>
+        <button class="btn btn-fire plan-btn" onclick="selectPlan(this,'Pro Plan')">Select Pro 🔥</button>
+      </div>
+    </div>
+
+    <p class="compare-note">
+      Not sure which to pick? <a href="#compare">Compare plans below</a> or
+      <a href="login.html">start with Basic free for 7 days</a>.
+    </p>
+  </section>
+
+  <!-- ====== COMPARISON TABLE ====== -->
+  <section class="faq" id="compare" style="background:var(--dark2)">
+    <div class="center reveal">
+      <span class="section-label">Side by Side</span>
+      <h2 class="section-title">PLAN <span class="fire">COMPARISON</span></h2>
+      <div class="rule"></div>
+    </div>
+
+    <div class="reveal">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th style="text-align:left">Feature</th>
+            <th>Basic — ₹15/mo</th>
+            <th>Pro — ₹20/mo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Gym Hours</td><td>6 AM – 10 PM</td><td>24 / 7</td></tr>
+          <tr><td>Cardio &amp; Strength Equipment</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>Group Fitness Classes</td><td>5 / week</td><td>Unlimited</td></tr>
+          <tr><td>IronCore Mobile App</td><td>Standard</td><td>Premium + AI</td></tr>
+          <tr><td>Locker Room &amp; Showers</td><td class="yes">✓</td><td>Premium + Towel</td></tr>
+          <tr><td>Progress Tracking</td><td class="yes">✓</td><td>Advanced Analytics</td></tr>
+          <tr><td>Personal Trainer Sessions</td><td class="no">✕</td><td>4 / month</td></tr>
+          <tr><td>Nutrition Coaching</td><td class="no">✕</td><td class="yes">✓</td></tr>
+          <tr><td>Sauna &amp; Spa Access</td><td class="no">✕</td><td class="yes">✓</td></tr>
+          <tr><td>Guest Passes</td><td class="no">✕</td><td>2 / month</td></tr>
+          <tr><td>Priority Class Booking</td><td class="no">✕</td><td class="yes">✓</td></tr>
+          <tr><td>Cancel Anytime</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ====== FAQ ====== -->
+  <section class="faq" id="faq">
+    <div class="center reveal">
+      <span class="section-label">Got Questions?</span>
+      <h2 class="section-title">FREQUENTLY <span class="fire">ASKED</span></h2>
+      <div class="rule"></div>
+    </div>
+
+    <div class="faq-list reveal">
+      <div class="faq-item">
+        <div class="faq-q">Can I switch plans after signing up? <span class="faq-arrow">▼</span></div>
+        <div class="faq-a">Absolutely. You can upgrade or downgrade your plan at any time from your dashboard. Changes take effect at the start of the next billing cycle.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Is there a joining fee or hidden charges? <span class="faq-arrow">▼</span></div>
+        <div class="faq-a">Zero joining fee, zero hidden charges. You pay only the monthly plan price shown. No surprises, ever.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What if I want to cancel my membership? <span class="faq-arrow">▼</span></div>
+        <div class="faq-a">Cancel anytime from your dashboard with one click. We'll keep your access active until the end of your paid period. No questions asked.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Do the personal trainer sessions roll over? <span class="faq-arrow">▼</span></div>
+        <div class="faq-a">Pro plan sessions are valid for 30 days and do not roll over. We encourage you to use them all — that's where the real results happen!</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Can I bring a friend with the Basic plan? <span class="faq-arrow">▼</span></div>
+        <div class="faq-a">The Basic plan is for individual access only. Guest passes (2/month) are a Pro plan perk. Upgrade anytime to bring your gym buddy!</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== CTA BANNER ====== -->
+  <section class="cta-banner">
+    <div class="reveal">
+      <span class="section-label">Don't Wait</span>
+      <h2 class="section-title">FIRST WEEK <span class="fire">FREE</span></h2>
+      <div class="rule" style="margin:0 auto 1.5rem"></div>
+      <p class="section-sub">
+        Sign up today and your first 7 days are on us. No credit card needed to start.
+      </p>
+      <div class="cta-btns">
+        <a href="login.html" class="btn btn-fire btn-lg">Start Free Trial 🔥</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== FOOTER ====== -->
+  <footer>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo">IRONCORE</div>
+        <p class="footer-desc">Chennai's premier fitness destination. We forge champions, one rep at a time.</p>
+        <div class="socials">
+          <a href="#" class="social">📸</a>
+          <a href="#" class="social">🐦</a>
+          <a href="#" class="social">▶️</a>
+          <a href="#" class="social">📘</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5>Pages</h5>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="plans.html">Plans</a></li>
+          <li><a href="login.html">Login</a></li>
+          <li><a href="dashboard.html">Dashboard</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Programs</h5>
+        <ul>
+          <li><a href="#">Strength</a></li>
+          <li><a href="#">Cardio</a></li>
+          <li><a href="#">Personal Training</a></li>
+          <li><a href="#">Nutrition</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Contact</h5>
+        <ul>
+          <li><a href="#">📍 Anna Nagar, Chennai</a></li>
+          <li><a href="#">📞 +91 98765 43210</a></li>
+          <li><a href="#">✉️ hello@ironcore.in</a></li>
+          <li><a href="#">⏰ Open 24 / 7 (Pro)</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 <span>IronCore Fitness</span>. All rights reserved.</p>
+      <p>Made with <span>🔥</span> in Chennai, India</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    // Inline helper for plan selection buttons
+    function selectPlan(btn, planName) {
+      // Update localStorage
+      const user = JSON.parse(localStorage.getItem('icUser') || '{}');
+      user.plan = planName;
+      localStorage.setItem('icUser', JSON.stringify(user));
+
+      // Visual feedback on all cards
+      document.querySelectorAll('.plan-card').forEach(c => {
+        c.classList.remove('selected');
+        const b = c.querySelector('.plan-btn');
+        if(b) b.textContent = c.dataset.plan === 'Pro Plan' ? 'Select Pro 🔥' : 'Select Plan';
+      });
+      btn.closest('.plan-card').classList.add('selected');
+      btn.textContent = '✓ Plan Selected!';
+
+      // Redirect to sign up
+      setTimeout(() => window.location.href = 'login.html', 900);
+    }
+  </script>
+</body>
+</html>
